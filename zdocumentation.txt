@@ -1,0 +1,17 @@
+
+
+
+
+npm install react@18 react-dom@18
+
+npx shadcn@latest init
+
+npm i next-themes
+
+npm i framer-motion clsx tailwind-merge
+
+npm install --save-dev hardhat
+
+npx hardhat init   [rename existing config n dont complete the par just expand]
+
+ npx hardhat test
