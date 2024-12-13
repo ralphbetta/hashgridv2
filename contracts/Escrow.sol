@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.2 <0.9.0;
 
+// skeleton for a smart contract that just tells you the types of function that are inside of it
+// I prefects convention
+// basic interface for an IERC721 token
 interface IERC721 {
     function transferFrom(address _from, address _to, uint256 _id) external;
 }
@@ -30,7 +33,6 @@ contract Escrow {
         lender = _lender;
     }
 
-
     modifier onlyBuyer(uint256 _nftID) {
         require(msg.sender == buyer[_nftID], "Only buyer can call this method");
         _;
@@ -44,5 +46,21 @@ contract Escrow {
     modifier onlyInspector() {
         require(msg.sender == inspector, "Only inspector can call this method");
         _;
+    }
+
+    function list(
+        uint256 _nftID,
+        address _buyer,
+        uint256 _purchasePrice,
+        uint256 _escrowAmount
+    ) public payable onlySeller {
+        // Transfer NFT from seller to this contract
+        //address(this): smartcontract addresss uses this.
+        IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
+
+        isListed[_nftID] = true;
+        purchasePrice[_nftID] = _purchasePrice;
+        escrowAmount[_nftID] = _escrowAmount;
+        buyer[_nftID] = _buyer;
     }
 }
