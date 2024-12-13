@@ -22,4 +22,6 @@ ls node_modules/@openzeppelin/contracts/utils/ xxxxxx
 
 npm install --save-dev  @openzeppelin/contracts@4.9.2
 
-npx hardhat node
+npx hardhat node -> FIRST
+
+npx hardhat run scripts/deploy.ts --network localhost -> SECOND

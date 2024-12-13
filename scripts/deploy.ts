@@ -1,12 +1,4 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
 import { ethers } from "hardhat";
-import { Contract } from "ethers";
-import { Escrow, RealEstate } from "../typechain-types";
 
 // Utility function to parse token amounts
 const tokens = (n: number): bigint => {
@@ -17,33 +9,33 @@ async function main() {
   // Setup accounts
   const [buyer, seller, inspector, lender] = await ethers.getSigners();
 
-  // Deploy Real Estate contract
-  // Deploy Real Estate contract
-  const RealEstateFactory = await ethers.getContractFactory("RealEstate");
-  const realEstate = (await RealEstateFactory.deploy()) as RealEstate;
-  await realEstate.deployed();
-  
-  console.log(`Deployed Real Estate Contract at: ${realEstate.address}`);
+  // Deploy RealEstate contract
+  const RealEstate = await ethers.getContractFactory("RealEstate");
+  const realEstate = await RealEstate.deploy();
+  const realEstateAddress = await realEstate.getAddress();
+  console.log(`Real Estate deployed at: ${realEstateAddress}`);
+
   console.log(`Minting 3 properties...\n`);
 
   for (let i = 0; i < 3; i++) {
     const transaction = await realEstate
-      .connect(seller).mint(`https://ipfs.io/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${i + 1}.json`);
+      .connect(seller)
+      .mint(`https://cdn.prod.website-files.com/6615636a03a6003b067c36dd/661ffd0dbe9673d914edca2d_6423fc9ca8b5e94da1681a70_Screenshot%25202023-03-29%2520at%252010.53.43.jpeg`);
     await transaction.wait();
   }
 
   // Deploy Escrow contract
   const Escrow = await ethers.getContractFactory("Escrow");
-  const escrow = (await Escrow.deploy(realEstate.address, seller.address, inspector.address, lender.address)) as Escrow;
-  await escrow.deployed();
+  const escrow = await Escrow.deploy(realEstateAddress, seller.address, inspector.address, lender.address);
+  const escrowAddress = await escrow.getAddress();
+  console.log(`Escrow deployed at: ${escrowAddress}`);
 
-  console.log(`Deployed Escrow Contract at: ${escrow.address}`);
+  console.log(`Deployed Escrow Contract at: ${escrowAddress}`);
   console.log(`Listing 3 properties...\n`);
 
   for (let i = 0; i < 3; i++) {
     // Approve properties
-    const transaction = await realEstate
-      .connect(seller).approve(escrow.address, i + 1);
+    const transaction = await realEstate.connect(seller).approve(escrowAddress, i + 1);
     await transaction.wait();
   }
 
@@ -66,8 +58,7 @@ async function main() {
   console.log(`Finished.`);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
+// Execute the main function
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
