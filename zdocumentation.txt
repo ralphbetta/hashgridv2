@@ -15,3 +15,9 @@ npm install --save-dev hardhat
 npx hardhat init   [rename existing config n dont complete the par just expand]
 
  npx hardhat test
+
+npm install --save-dev @openzeppelin/contracts
+
+ls node_modules/@openzeppelin/contracts/utils/ xxxxxx
+
+npm install --save-dev  @openzeppelin/contracts@4.9.2

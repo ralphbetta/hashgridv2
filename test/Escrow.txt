@@ -2,6 +2,7 @@
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
 
+// this helper convert currency to token
 const tokens = (n) => {
     return ethers.utils.parseUnits(n.toString(), 'ether')
 }
@@ -38,6 +39,11 @@ describe('Escrow', () => {
         // List Property
         transaction = await escrow.connect(seller).list(1, buyer.address, tokens(10), tokens(5))
         await transaction.wait()
+
+        console.log("Seller Address:", seller.address);
+        console.log("Inspector Address:", inspector.address);
+        console.log("Lender Address:", lender.address);
+        console.log("RealEstate Address:", realEstate.address);
     })
 
     describe('Deployment', () => {
