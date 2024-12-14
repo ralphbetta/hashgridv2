@@ -102,4 +102,37 @@ describe("Dappazone", () => {
         expect(transaction).to.emit(dappazone, "Buy");
       });
   });
+
+  describe("Withdrawing", () => {
+    let balanceBefore
+
+    beforeEach(async () => {
+      // List a item
+      let transaction = await dappazone.connect(deployer).listProduct(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK)
+      await transaction.wait()
+
+      // Buy a item
+      transaction = await dappazone.connect(buyer).buy(ID, { value: COST })
+      await transaction.wait()
+
+      // Get Deployer balance before
+      balanceBefore = await ethers.provider.getBalance(deployer.address)
+
+      // Withdraw
+      transaction = await dappazone.connect(deployer).withdraw()
+      await transaction.wait()
+    })
+
+    it('Updates the owner balance', async () => {
+      const balanceAfter = await ethers.provider.getBalance(deployer.address)
+      expect(balanceAfter).to.be.greaterThan(balanceBefore)
+    })
+
+    it('Updates the contract balance', async () => {
+      const contractAddress = await dappazone.getAddress();
+      const result = await ethers.provider.getBalance(contractAddress)
+      expect(result).to.equal(0)
+    })
+  })
+
 });
