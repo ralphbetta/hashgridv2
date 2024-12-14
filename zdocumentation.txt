@@ -22,6 +22,17 @@ ls node_modules/@openzeppelin/contracts/utils/ xxxxxx
 
 npm install --save-dev  @openzeppelin/contracts@4.9.2
 
-npx hardhat node -> FIRST
+npx shadcn@latest add label
 
+
+npx hardhat node -> FIRST
 npx hardhat run scripts/deploy.ts --network localhost -> SECOND
+
+
+
+https://ui.aceternity.com/  command+k to search
+https://devv.ai —— text to code. Currently unavailable
+https://app.eraser.io ——planning and drawing
+https://ui.shadcn.com —— component
+https://lucide.dev —— icons, comes with shadcn
+https://www.privy.io/ ——for authentication — https://docs.privy.io/guide/react/quickstart —guide
