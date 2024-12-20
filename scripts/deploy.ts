@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ethers } from "hardhat";
-
 const tokens = (n: number) => {
   return ethers.parseUnits(n.toString(), "ether");
 };
