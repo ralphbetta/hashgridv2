@@ -28,6 +28,7 @@ npx shadcn@latest add label
 npx hardhat node -> FIRST
 npx hardhat run scripts/deploy.ts --network localhost -> SECOND
 
+npx hardhat compile
 
 
 https://ui.aceternity.com/  command+k to search
